@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Control de Plagas</title>
+    <style>
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #262626;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #262626 100%);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #262626 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 40px 20px;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, transparent 50%, rgba(16, 185, 129, 0.1) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #1a1a1a;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .card {
+            background: rgba(38, 38, 38, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .metric-card {
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .metric-blue {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .metric-green {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .metric-purple {
+            background: rgba(147, 51, 234, 0.1);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .metric-orange {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .metric-number {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            height: 80px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+        }
+
+        .nav-item.active {
+            color: var(--accent-blue);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="header">
+                <div class="logo-container">
+                    <div class="logo">🛡️</div>
+                    <div>
+                        <div style="font-size: 24px; font-weight: bold;">Control de Plagas</div>
+                        <div style="color: #60a5fa; font-size: 14px;">Especialistas en Fumigación</div>
+                    </div>
+                </div>
+                <div style="width: 40px; height: 40px; background: rgba(255, 255, 255, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    ☰
+                </div>
+            </div>
+
+            <div class="title">
+                Fumigación<br>
+                Profesional<br>
+                <span style="color: #60a5fa;">en tu Ciudad</span>
+            </div>
+
+            <div class="subtitle">
+                15 años protegiendo hogares y empresas. 
+                Soluciones efectivas y seguras contra todo tipo de plagas.
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-primary">
+                    ✉️ Nuevo Servicio
+                </button>
+                <button class="btn-secondary">
+                    📞 Agregar Cliente
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #60a5fa;">👥</div>
+                    <div class="stat-number">2400+</div>
+                    <div class="stat-label">Clientes Activos</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #10b981;">🏆</div>
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Años de Experiencia</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #fbbf24;">⭐</div>
+                    <div class="stat-number">99%</div>
+                    <div class="stat-label">Efectividad</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #a855f7;">🕒</div>
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Servicio Disponible</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-title">
+                📅 Resumen de Hoy
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-card metric-blue">
+                    <div>
+                        <div style="color: #60a5fa; font-size: 14px;">Servicios</div>
+                        <div class="metric-number">0</div>
+                    </div>
+                    <div style="color: #60a5fa; font-size: 24px;">📅</div>
+                </div>
+
+                <div class="metric-card metric-green">
+                    <div>
+                        <div style="color: #10b981; font-size: 14px;">Ingresos</div>
+                        <div class="metric-number">$0</div>
+                    </div>
+                    <div style="color: #10b981; font-size: 24px;">💰</div>
+                </div>
+
+                <div class="metric-card metric-purple">
+                    <div>
+                        <div style="color: #a855f7; font-size: 14px;">Mes Actual</div>
+                        <div class="metric-number">$0</div>
+                    </div>
+                    <div style="color: #a855f7; font-size: 24px;">📈</div>
+                </div>
+
+                <div class="metric-card metric-orange">
+                    <div>
+                        <div style="color: #f59e0b; font-size: 14px;">Pendientes</div>
+                        <div class="metric-number">0</div>
+                    </div>
+                    <div style="color: #f59e0b; font-size: 24px;">🕒</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                🐛 Servicios de Hoy
+            </div>
+            
+            <div style="text-align: center; padding: 40px 0;">
+                <div style="font-size: 48px; color: #4b5563; margin-bottom: 12px;">📅</div>
+                <div style="color: #6b7280;">No hay servicios programados para hoy</div>
+                <button style="margin-top: 16px; background: #3b82f6; color: white; padding: 8px 24px; border-radius: 8px; border: none; cursor: pointer;">
+                    Programar Servicio
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Acciones Rápidas</div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <button style="background: #3b82f6; color: white; padding: 16px; border-radius: 12px; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span style="font-size: 24px;">➕</span>
+                    <span style="font-size: 14px; font-weight: 500;">Nuevo Servicio</span>
+                </button>
+                
+                <button style="background: #10b981; color: white; padding: 16px; border-radius: 12px; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span style="font-size: 24px;">👥</span>
+                    <span style="font-size: 14px; font-weight: 500;">Agregar Cliente</span>
+                </button>
+                
+                <button style="background: #a855f7; color: white; padding: 16px; border-radius: 12px; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span style="font-size: 24px;">📅</span>
+                    <span style="font-size: 14px; font-weight: 500;">Ver Agenda</span>
+                </button>
+                
+                <button style="background: #f59e0b; color: white; padding: 16px; border-radius: 12px; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                    <span style="font-size: 24px;">📊</span>
+                    <span style="font-size: 14px; font-weight: 500;">Reportes</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <button class="nav-item active">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">Inicio</div>
+        </button>
+        <button class="nav-item">
+            <div class="nav-icon">📅</div>
+            <div class="nav-label">Agenda</div>
+        </button>
+        <button class="nav-item">
+            <div class="nav-icon">👥</div>
+            <div class="nav-label">Clientes</div>
+        </button>
+        <button class="nav-item">
+            <div class="nav-icon">📊</div>
+            <div class="nav-label">Reportes</div>
+        </button>
+    </div>
+
+    <script>
+        // Simple navigation functionality
+        document.querySelectorAll('.nav-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // Touch optimization for mobile
+        document.addEventListener('touchstart', function() {}, true);
+    </script>
+</body>
+</html>

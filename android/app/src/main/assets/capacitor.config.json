@@ -1,0 +1,5 @@
+{
+	"appId": "com.pestcontrol.app",
+	"appName": "Control de Plagas",
+	"webDir": "dist/public"
+}

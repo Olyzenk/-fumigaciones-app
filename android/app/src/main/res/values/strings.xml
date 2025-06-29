@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Control de Plagas</string>
+    <string name="title_activity_main">Control de Plagas</string>
+    <string name="package_name">com.pestcontrol.app</string>
+    <string name="custom_url_scheme">com.pestcontrol.app</string>
+</resources>
